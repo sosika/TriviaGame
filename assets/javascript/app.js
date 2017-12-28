@@ -1,3 +1,8 @@
+	
+//-------------------------------------------------------------
+//	Global variables
+//-------------------------------------------------------------
+
 	var correct = 0;
 	var wrong = 0;
 	var timer = $("<div>");
@@ -48,7 +53,7 @@
 	        alert("Time Up!");
 	        // Stop timer
 	        clearInterval(intervalId);
-	        // Unanswer question is accounted as wrong answer
+	        // Unanswer question is counted as a wrong answer
 	        wrong++;
 	        question_asked++;
 	        // Keep track of question asked
@@ -57,9 +62,6 @@
         		} else {
         			setTimeout(() => {displayStat()}, 2000);
         		}
-	        console.log("correct : " + correct);
-        	console.log("wrong : " + wrong);
-        	console.log("question_asked : " + question_asked);
 	      }
 
 	    } 
@@ -78,7 +80,6 @@
         	url: "https://opentdb.com/api.php?amount=1&category=11&difficulty=easy&type=multiple",
         	method: "GET"
         }).done(function(response){
-        	console.log(response);
 
         	// Create question class to hold question and answers
         	var question = $(".firstPage");
@@ -89,16 +90,16 @@
         	// Display question
 			question.append("<p>" + response.results[0].question + "</p>");
 			// Choice 1
-			question.append("<input type=\"radio\" name=\"question\" id=\"choice1\" value=" + response.results[0].correct_answer + ">    ");
+			question.append("<input type=\"radio\" name=\"question\" id=\"choice1\" value='"+response.results[0].correct_answer+"'>");
 			question.append("<label for=\"choice1\">" + response.results[0].correct_answer + "</label><br>")
 			// Choice 2
-			question.append("<input type=\"radio\" name=\"question\" id=\"choice2\" value=" + response.results[0].incorrect_answers[0] + ">    ");
+			question.append("<input type=\"radio\" name=\"question\" id=\"choice2\" value='" + response.results[0].incorrect_answers[0]+ "'>");
 			question.append("<label for=\"choice1\">" + response.results[0].incorrect_answers[0] + "</label><br>")
 			// Choice 3
-			question.append("<input type=\"radio\" name=\"question\" id=\"choice3\" value=" + response.results[0].incorrect_answers[1] + ">    ");
+			question.append("<input type=\"radio\" name=\"question\" id=\"choice3\" value='" + response.results[0].incorrect_answers[1] + "'>");
 			question.append("<label for=\"choice1\">" + response.results[0].incorrect_answers[1] + "</label><br>")
 			// Choice 4
-			question.append("<input type=\"radio\" name=\"question\" id=\"choice4\" value=" + response.results[0].incorrect_answers[2] + ">    ");
+			question.append("<input type=\"radio\" name=\"question\" id=\"choice4\" value='"+ response.results[0].incorrect_answers[2] + "'>");
 			question.append("<label for=\"choice1\">" + response.results[0].incorrect_answers[2] + "</label><br><br>")
 			// Add Submit button
 			question.append("<input type=\"button\" id=\"btnGetValue\" Value=\"Submit\" />");
@@ -108,12 +109,10 @@
 			$('#btnGetValue').click(function() {
 				event.preventDefault();
 				clearInterval(intervalId);
-        		var selValue = $("input[type=radio][name=question]:checked").val();
+        		var selValue = $('input[name="question"]:checked').val();
 								
-        		console.log(selValue);
-        		console.log(response.results[0].correct_answer);
         		// Update score
-        		if (selValue == response.results[0].correct_answer) {
+        		if (response.results[0].correct_answer == selValue) {
         			correct = correct + 1;
         			timer.html("<h2>Correct!</h2>").css('color', 'green');
         			
@@ -135,9 +134,6 @@
 
         		question_asked++;
 
-        		console.log("correct : " + correct);
-        		console.log("wrong : " + wrong);
-        		console.log("question_asked : " + question_asked);
         	});
         });
 	}
